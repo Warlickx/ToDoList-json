@@ -1,0 +1,14 @@
+<table>
+<tbody>
+		<tr>
+			<th>tache</th>
+			<th>deadline</th>
+		</tr>
+		<?php foreach ($taches as $tache) : ?>
+        <tr>
+            <td> <?php echo $tache->tache; ?> </td>
+            <td> <?php echo $tache->deadline; ?> </td>
+        </tr>
+		<?php endforeach; ?>
+	</tbody>
+</table>
