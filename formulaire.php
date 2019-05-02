@@ -30,6 +30,7 @@ function done($taches)
 <body>
 <h2>To Do List :</h2>
 <form id="ToDo" method="post" action="formulaire.php">
+<!--A faire-->
     <fieldset class="1eresection">
         <div class='main'>
             <div id='encours'>
@@ -40,6 +41,7 @@ function done($taches)
         <input type="submit" value="Archiver" name="afaire">
 		<input type="submit" value="Supprimer" name="delete">
     </fieldset>
+<!--Fait-->
     <fieldset class="2emesection">
     <div class='main'>
         <div id='fait'>
