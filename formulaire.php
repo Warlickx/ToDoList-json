@@ -1,12 +1,17 @@
+<!--Variables et fonctions-->
+
 <?php
+//Variables
 $url = 'assets/json/todo.json'; //Chemin url
 $data = file_get_contents($url); //mets les données json dans une variable
 $taches = json_decode($data); //décode les données json
+$json = json_encode($taches); //encode les changements
+//Fonctions
 function todo($taches) //Affichage des tâches à faire
 {
     foreach ($taches as $value => $row){
         if ($taches[$value]->{'done'} == false){
-            echo "<p class='todop'><input type='checkbox' name='name[]' value='".$taches[$value]->{'tache'}."' class='checkbox'>".$taches[$value]->{'tache'}."</p>";   
+            echo "<p><input type='checkbox' name='check1' value='value1' >".$taches[$value]->{'tache'}."</p>";   
         }
     }
 }
@@ -14,11 +19,29 @@ function done($taches)
 {
     foreach ($taches as $value => $row){
         if ($taches[$value]->{'done'} == true){
-            echo "<p class='isdop'><input type='checkbox' value='".$taches[$value]->{'tache'}."' class='checkbox' disabled='disabled' checked='checked'>".$taches[$value]->{'tache'}."</p>";
+            echo "<p><input type='checkbox' name='check1' value='value1' disabled='true' checked='true'>".$taches[$value]->{'tache'}."</p>";
         }
     }
 }
+//CA MARCHE PAS
+//function archiver()
+//{
+//    foreach ($taches as $value=> $row){
+//        if (empty($_POST['check1'])){     //Si la checkbox est vide, on reste sur "todo"
+//            todo();
+//        }
+//        else{                             //else on encode dans les lignes cochées true pour la valeur 'done'
+//            $taches['done'] = true;
+//            file_put_contents('todo.json', $json);
+//            done();
+//        }
+//    }
+//}
+
 ?>
+
+<!--HTML-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +53,9 @@ function done($taches)
 <body>
 <h2>To Do List :</h2>
 <form id="ToDo" method="post" action="formulaire.php">
+
 <!--A faire-->
+
     <fieldset class="1eresection">
         <div class='main'>
             <div id='encours'>
@@ -38,10 +63,12 @@ function done($taches)
                 <?php todo($taches) ?>
             </div>
         </div>
-        <input type="submit" value="Archiver" name="afaire">
-		<input type="submit" value="Supprimer" name="delete">
+        <input type="submit" value="Archiver" onclick="archiver()" name="afaire">
+		<input type="submit" value="Supprimer" onclick="supprimer()" name="delete">
     </fieldset>
+
 <!--Fait-->
+
     <fieldset class="2emesection">
     <div class='main'>
         <div id='fait'>
@@ -59,9 +86,7 @@ function done($taches)
     </fieldset>
 </form>
 <?php
-//foreach ($taches as $tache) {
-//	echo $tache->tache . '<br>';
-//}
+
 ?>
 </body>
 </html>
