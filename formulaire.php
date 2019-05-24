@@ -1,92 +1,55 @@
-<!--Variables et fonctions-->
-
 <?php
-//Variables
-$url = 'assets/json/todo.json'; //Chemin url
-$data = file_get_contents($url); //mets les données json dans une variable
-$taches = json_decode($data); //décode les données json
-$json = json_encode($taches); //encode les changements
-//Fonctions
-function todo($taches) //Affichage des tâches à faire
-{
-    foreach ($taches as $value => $row){
-        if ($taches[$value]->{'done'} == false){
-            echo "<p><input type='checkbox' name='check1' value='value1' >".$taches[$value]->{'tache'}."</p>";   
-        }
-    }
-}
-function done($taches)
-{
-    foreach ($taches as $value => $row){
-        if ($taches[$value]->{'done'} == true){
-            echo "<p><input type='checkbox' name='check1' value='value1' disabled='true' checked='true'>".$taches[$value]->{'tache'}."</p>";
-        }
-    }
-}
-//CA MARCHE PAS
-//function archiver()
-//{
-//    foreach ($taches as $value=> $row){
-//        if (empty($_POST['check1'])){     //Si la checkbox est vide, on reste sur "todo"
-//            todo();
-//        }
-//        else{                             //else on encode dans les lignes cochées true pour la valeur 'done'
-//            $taches['done'] = true;
-//            file_put_contents('todo.json', $json);
-//            done();
-//        }
-//    }
-//}
-
+require('contenu.php');
 ?>
-
-<!--HTML-->
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ma ToDolist Json</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>To Do List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
+
 <body>
-<h2>To Do List :</h2>
-<form id="ToDo" method="post" action="formulaire.php">
-
-<!--A faire-->
-
-    <fieldset class="1eresection">
-        <div class='main'>
-            <div id='encours'>
-                <h3>À faire :</h3>
-                <?php todo($taches) ?>
-            </div>
+    <section class="container-fluid maincontent">
+        <div class="top">
+            <h3>To Do List SQL</h3>
         </div>
-        <input type="submit" value="Archiver" onclick="archiver()" name="afaire">
-		<input type="submit" value="Supprimer" onclick="supprimer()" name="delete">
-    </fieldset>
-
-<!--Fait-->
-
-    <fieldset class="2emesection">
-    <div class='main'>
-        <div id='fait'>
-            <h3>Archives :</h3>
-            <?php done($taches) ?>
+        <div class="middle">
+            <h5>Tâches</h5>
+            <form method="POST">
+                <?php
+                if (is_array($array_data)) {
+                    foreach ($array_data as $value) {
+                        if ($value['bool'] === 0) {
+                            echo "<p><input type='checkbox' name='checkbox[]' value='" . $value['ID'] . "' />" . " " . $value['taches'] . "</p>";
+                        }
+                    }
+                } ?>
+                <button type="submit" name="archive" class="btn btn-secondary my-3">Archiver</button>
+                <button type="submit" name="delete" class="btn btn-danger my-3">Supprimer</button>
+            </form>
+            <h5>Archives</h5>
+            <?php
+            if (is_array($array_data)) {
+                foreach ($array_data as $value) {
+                    if ($value['bool'] === 1) {
+                        echo "<p><input type='checkbox' name='checkbox[]' disabled='disabled' checked='checked' /><strike>" . " " . $value['taches'] . "</strike></p>";
+                    }
+                }
+            } ?>
         </div>
-    </div>
-    </fieldset>
-</form>
-<form id="ajouter" method="post" action="formulaire.php">
-    <fieldset class="3emesection">
-        <legend class="w-auto">Ajouter</legend>
-            <input type="text" name="ajouter">
-        <input type="submit" value="Ajouter" name="ajout" id="ajout" class="col-md-9">
-    </fieldset>
-</form>
-<?php
-
-?>
+        <form action="index.php" method="POST">
+            <div class="bottom">
+                <h6>Nouvelles Tâches</h6>
+                <textarea rows="5" col="100" class="taches mt-3" name="taches"></textarea>
+                <?php echo "<p>" . $error . "</p>" ?>
+                <p><button type="submit" name="submit" value="Envoyer" class="btn btn-secondary my-3">Envoyer</button></p>
+        </form>
+        </div>
+    </section>
 </body>
+
 </html>
